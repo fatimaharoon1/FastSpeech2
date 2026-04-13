@@ -7,7 +7,7 @@ import torch.nn as nn
 from torch.utils.data import DataLoader
 from torch.utils.tensorboard import SummaryWriter
 from tqdm import tqdm
-
+from utils.tools import get_mask_from_lengths
 from utils.model import get_model, get_vocoder, get_param_num
 from utils.tools import to_device, log, synth_one_sample
 from model import FastSpeech2Loss
@@ -28,7 +28,7 @@ def main(args, configs):
         "train.txt", preprocess_config, train_config, sort=True, drop_last=True
     )
     batch_size = train_config["optimizer"]["batch_size"]
-    group_size = 4  # Set this larger than 1 to enable sorting in Dataset
+    group_size = 1  # Set this larger than 1 to enable sorting in Dataset
     assert batch_size * group_size < len(dataset)
     loader = DataLoader(
         dataset,
@@ -77,7 +77,64 @@ def main(args, configs):
         for batchs in loader:
             for batch in batchs:
                 batch = to_device(batch, device)
+                # ===== DEBUG BLOCK START =====
+                ids = batch[0]
+                raw_texts = batch[1]
+                speakers = batch[2]
+                texts = batch[3]
+                src_lens = batch[4]
+                max_src_len = batch[5]
+                mels = batch[6]
+                mel_lens = batch[7]
+                max_mel_len = batch[8]
+                pitches = batch[9]
+                energies = batch[10]
+                durations = batch[11]
+ 
+                print("\n========== DEBUG SAMPLE ==========")
 
+                print("ID:", ids[0])
+                print("Raw Text:", raw_texts[0])
+
+                print("\n--- TEXT ---")
+                print("Text tensor shape:", texts.shape)
+                print("Text[0]:", texts[0])
+                print("Text length:", src_lens[0].item())
+
+                print("\n--- DURATION ---")
+                print("Durations shape:", durations.shape)
+                print("Durations[0]:", durations[0])
+                print("Duration length:", len(durations[0]))
+
+                print("\n--- MEL ---")
+                print("Mel shape:", mels.shape)
+                print("Mel length:", mel_lens[0].item())
+
+                print("\n--- PITCH ---")
+                print("Pitch shape:", pitches.shape)
+                print("Pitch[0] length:", len(pitches[0]))
+
+                print("\n--- ENERGY ---")
+                print("Energy shape:", energies.shape)
+                print("Energy[0] length:", len(energies[0]))
+
+# Mask check
+       
+                src_mask = get_mask_from_lengths(src_lens)
+
+                print("\n--- MASK ---")
+                print("Mask shape:", src_mask.shape)
+                print("Mask[0]:", src_mask[0])
+
+                print("\n--- SANITY CHECK ---")
+                print("Text vs Duration:", src_lens[0].item(), "vs", len(durations[0]))
+                print("Mel vs Pitch:", mel_lens[0].item(), "vs", len(pitches[0]))
+                print("Mel vs Energy:", mel_lens[0].item(), "vs", len(energies[0]))
+
+                print("=================================\n")
+
+                exit()  # STOP after one sample
+# ===== DEBUG BLOCK END =====
                 # Forward
                 output = model(*(batch[2:]))
 

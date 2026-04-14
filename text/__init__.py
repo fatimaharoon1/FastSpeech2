@@ -53,19 +53,23 @@ def sequence_to_text(sequence):
             result += s
     return result.replace("}{", " ")
 
-
 def _clean_text(text, cleaner_names):
     for name in cleaner_names:
         cleaner = getattr(cleaners, name)
-        if not cleaner:
-            raise Exception("Unknown cleaner: %s" % name)
         text = cleaner(text)
+
     return text
 
-
 def _symbols_to_sequence(symbols):
-    return [_symbol_to_id[s] for s in symbols if _should_keep_symbol(s)]
+    sequence = []
 
+    for s in symbols:
+        if s in _symbol_to_id:
+            sequence.append(_symbol_to_id[s])
+        else:
+            sequence.append(_symbol_to_id["<unk>"])
+
+    return sequence
 
 def _arpabet_to_sequence(text):
     return _symbols_to_sequence(["@" + s for s in text.split()])

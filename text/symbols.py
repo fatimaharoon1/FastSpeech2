@@ -14,7 +14,7 @@ Defines symbols for Urdu FastSpeech2 training.
 __pad = "_"
 _special = "-"
 _punctuation = "،۔!؟ "
-_letters = "اآبپتٹثجچحخدڈذرڑزژسشصضطظعغفقکگلمنوہھءیے"
+_letters = "اآبپتٹثجچحخدڈذرڑزژسشصضطظعغفقکگلمنوہھءیےںًٌٍَُِّْ"
 
 # (optional but safe)
 _silences = ["@sp", "@sil"]

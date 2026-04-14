@@ -10,17 +10,19 @@ The default is a set of ASCII characters that works well for English or text tha
 """
 Defines symbols for Urdu FastSpeech2 training.
 """
-
 __pad = "_"
-_special = "-"
-_punctuation = "،۔!؟ "
-_letters = "اآبپتٹثجچحخدڈذرڑزژسشصضطظعغفقکگلمنوہھءیےںًٌٍَُِّْ"
+__unk = "<unk>"
 
-# (optional but safe)
+_special = "-"
+
+_punctuation = "،۔!؟،، ، . , : ؛ ؟ \" ' ( ) "
+_letters = "اآبپتٹثجچحخدڈذرڑزژسشصضطظعغفقکگلمنوہھءیےں"
+
 _silences = ["@sp", "@sil"]
 
 symbols = (
     [__pad]
+    + [__unk]
     + list(_special)
     + list(_punctuation)
     + list(_letters)

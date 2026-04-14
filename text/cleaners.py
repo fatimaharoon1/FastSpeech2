@@ -78,7 +78,10 @@ def transliteration_cleaners(text):
     text = collapse_whitespace(text)
     return text
 
-
+def urdu_cleaners(text):
+    text = text.strip()
+    text = re.sub(_whitespace_re, ' ', text)
+    return text
 def english_cleaners(text):
     '''Pipeline for English text, including number and abbreviation expansion.'''
     text = convert_to_ascii(text)

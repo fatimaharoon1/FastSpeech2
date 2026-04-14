@@ -17,6 +17,9 @@ hyperparameter. Some cleaners are English-specific. You'll typically want to use
 import re
 from unidecode import unidecode
 from .numbers import normalize_numbers
+import re
+
+
 _whitespace_re = re.compile(r'\s+')
 
 # List of (regular expression, replacement) pairs for abbreviations:
@@ -70,6 +73,26 @@ def basic_cleaners(text):
     text = collapse_whitespace(text)
     return text
 
+def normalize_urdu(text):
+    replacements = {
+        "ي": "ی",
+        "ك": "ک",
+        "ہ": "ہ",
+        "ة": "ت",
+        "ـ": "",
+        "٬": "،",
+        "۔": "۔",
+    }
+    for k, v in replacements.items():
+        text = text.replace(k, v)
+    return text
+
+
+def urdu_cleaners(text):
+    text = normalize_urdu(text)
+    text = text.strip()
+    text = re.sub(_whitespace_re, ' ', text)
+    return text
 
 def transliteration_cleaners(text):
     '''Pipeline for non-English text that transliterates to ASCII.'''
@@ -77,10 +100,7 @@ def transliteration_cleaners(text):
     text = lowercase(text)
     text = collapse_whitespace(text)
     return text
-def urdu_cleaners(text):
-    text = text.strip()
-    text = re.sub(_whitespace_re, ' ', text)
-    return text
+
 
 def english_cleaners(text):
     '''Pipeline for English text, including number and abbreviation expansion.'''

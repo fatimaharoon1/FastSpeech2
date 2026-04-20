@@ -75,14 +75,19 @@ def basic_cleaners(text):
 
 def normalize_urdu(text):
     replacements = {
-        "ي": "ی",
-        "ك": "ک",
-        "ہ": "ہ",
-        "ة": "ت",
-        "ـ": "",
-        "٬": "،",
-        "۔": "۔",
-    }
+    "ي": "ی",
+    "ى": "ی",
+    "ك": "ک",
+    "ہ": "ہ",
+    "ة": "ت",
+    "ھ": "ھ",
+    "ؤ": "و",
+    "ئ": "ی",
+    "أ": "ا",
+    "إ": "ا",
+    "ٴ": "",
+    "ـ": "",
+}
     for k, v in replacements.items():
         text = text.replace(k, v)
     return text

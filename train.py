@@ -133,7 +133,7 @@ def main(args, configs):
 
                 print("=================================\n")
 
-                exit()  # STOP after one sample
+                # exit()  # STOP after one sample
 # ===== DEBUG BLOCK END =====
                 # Forward
                 output = model(*(batch[2:]))

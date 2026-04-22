@@ -1,0 +1,116 @@
+File type = "ooTextFile"
+Object class = "TextGrid"
+
+xmin = 0 
+xmax = 2.58 
+tiers? <exists> 
+size = 2 
+item []: 
+    item [1]:
+        class = "IntervalTier" 
+        name = "words" 
+        xmin = 0 
+        xmax = 2.58 
+        intervals: size = 7 
+        intervals [1]:
+            xmin = 0 
+            xmax = 0.16 
+            text = "" 
+        intervals [2]:
+            xmin = 0.16 
+            xmax = 0.57 
+            text = "صحیح" 
+        intervals [3]:
+            xmin = 0.57 
+            xmax = 0.99 
+            text = "تو" 
+        intervals [4]:
+            xmin = 0.99 
+            xmax = 1.1 
+            text = "" 
+        intervals [5]:
+            xmin = 1.1 
+            xmax = 1.44 
+            text = "جیت" 
+        intervals [6]:
+            xmin = 1.44 
+            xmax = 1.77 
+            text = "گیا" 
+        intervals [7]:
+            xmin = 1.77 
+            xmax = 2.58 
+            text = "" 
+    item [2]:
+        class = "IntervalTier" 
+        name = "phones" 
+        xmin = 0 
+        xmax = 2.58 
+        intervals: size = 17 
+        intervals [1]:
+            xmin = 0 
+            xmax = 0.16 
+            text = "" 
+        intervals [2]:
+            xmin = 0.16 
+            xmax = 0.3 
+            text = "ʂ" 
+        intervals [3]:
+            xmin = 0.3 
+            xmax = 0.38 
+            text = "ə" 
+        intervals [4]:
+            xmin = 0.38 
+            xmax = 0.4 
+            text = "h" 
+        intervals [5]:
+            xmin = 0.4 
+            xmax = 0.55 
+            text = "i" 
+        intervals [6]:
+            xmin = 0.55 
+            xmax = 0.57 
+            text = "h" 
+        intervals [7]:
+            xmin = 0.57 
+            xmax = 0.63 
+            text = "t" 
+        intervals [8]:
+            xmin = 0.63 
+            xmax = 0.99 
+            text = "o" 
+        intervals [9]:
+            xmin = 0.99 
+            xmax = 1.1 
+            text = "" 
+        intervals [10]:
+            xmin = 1.1 
+            xmax = 1.19 
+            text = "ɟ" 
+        intervals [11]:
+            xmin = 1.19 
+            xmax = 1.37 
+            text = "i" 
+        intervals [12]:
+            xmin = 1.37 
+            xmax = 1.44 
+            text = "t" 
+        intervals [13]:
+            xmin = 1.44 
+            xmax = 1.45 
+            text = "ɡ" 
+        intervals [14]:
+            xmin = 1.45 
+            xmax = 1.48 
+            text = "a" 
+        intervals [15]:
+            xmin = 1.48 
+            xmax = 1.68 
+            text = "j" 
+        intervals [16]:
+            xmin = 1.68 
+            xmax = 1.77 
+            text = "a" 
+        intervals [17]:
+            xmin = 1.77 
+            xmax = 2.58 
+            text = "" 

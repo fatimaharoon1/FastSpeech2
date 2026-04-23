@@ -1,30 +1,62 @@
-""" from https://github.com/keithito/tacotron """
+# """ from https://github.com/keithito/tacotron """
 
-"""
-Defines the set of symbols used in text input to the model.
+# """
+# Defines the set of symbols used in text input to the model.
 
-The default is a set of ASCII characters that works well for English or text that has been run through Unidecode. For other data, you can modify _characters. See TRAINING_DATA.md for details. """
+# The default is a set of ASCII characters that works well for English or text that has been run through Unidecode. For other data, you can modify _characters. See TRAINING_DATA.md for details. """
 
-# from https://github.com/keithito/tacotron
+# # from https://github.com/keithito/tacotron
 
-"""
-Defines symbols for Urdu FastSpeech2 training.
-"""
+# """
+# Defines symbols for Urdu FastSpeech2 training.
+# """
+
+# symbols.py
+
 __pad = "_"
 __unk = "<unk>"
 
-_special = "-"
+symbols = [
+    __pad,
+    __unk,
 
-_punctuation = "،۔!؟،، ، . , : ؛ ؟ \" ' ( ) "
-_letters = "اآبپتٹثجچحخدڈذرڑزژسشصضطظعغفقکگلمنوہھءیےں"
+    # consonants
+    "m","n","ŋ","p","b","t","d","ʈ","ɖ","k","ɡ",
+    "s","z","ʃ","ʒ","f","x","ɣ","h",
+    "l","r","ɾ","j","ʋ",
 
-_silences = ["@sp", "@sil"]
+    # aspirated
+    "pʰ","bʰ","tʰ","dʰ","kʰ","ɡʰ",
 
-symbols = (
-    [__pad]
-    + [__unk]
-    + list(_special)
-    + list(_punctuation)
-    + list(_letters)
-    + _silences
-)
+    # vowels
+    "a","e","i","o","u","ə","ɪ","ʊ","ɛ","ɔ","ʌ",
+
+    # long vowels
+    "aː","iː","uː","eː","oː",
+
+    # nasal
+    "ẽː","ũː",
+
+    # silence
+    "sil"
+]
+
+#characetr level pipeline 
+# __pad = "_"
+# __unk = "<unk>"
+
+# _special = "-"
+
+# _punctuation = "،۔!؟،، ، . , : ؛ ؟ \" ' ( ) "
+# _letters = "اآبپتٹثجچحخدڈذرڑزژسشصضطظعغفقکگلمنوہھءیےں"
+
+# _silences = ["@sp", "@sil"]
+
+# symbols = (
+#     [__pad]
+#     + [__unk]
+#     + list(_special)
+#     + list(_punctuation)
+#     + list(_letters)
+#     + _silences
+# )

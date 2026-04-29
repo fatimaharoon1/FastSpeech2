@@ -21,8 +21,10 @@ class Dataset(Dataset):
         self.basename, self.speaker, self.text, self.raw_text = self.process_meta(
             filename
         )
+
         with open(os.path.join(self.preprocessed_path, "speakers.json")) as f:
             self.speaker_map = json.load(f)
+
         self.sort = sort
         self.drop_last = drop_last
 
@@ -34,31 +36,45 @@ class Dataset(Dataset):
         speaker = self.speaker[idx]
         speaker_id = self.speaker_map[speaker]
         raw_text = self.raw_text[idx]
-        phone = np.array(text_to_sequence(self.text[idx], self.cleaners))
+
+        # =========================
+        # TEXT → ensure int64
+        # =========================
+        phone = np.array(
+            text_to_sequence(self.text[idx], self.cleaners),
+            dtype=np.int64
+        )
+
+        # =========================
+        # LOAD FEATURES (FORCE float32)
+        # =========================
         mel_path = os.path.join(
             self.preprocessed_path,
             "mel",
             "{}-mel-{}.npy".format(speaker, basename),
         )
-        mel = np.load(mel_path)
+        mel = np.load(mel_path).astype(np.float32)
+
         pitch_path = os.path.join(
             self.preprocessed_path,
             "pitch",
             "{}-pitch-{}.npy".format(speaker, basename),
         )
-        pitch = np.load(pitch_path)
+        pitch = np.load(pitch_path).astype(np.float32)
+
         energy_path = os.path.join(
             self.preprocessed_path,
             "energy",
             "{}-energy-{}.npy".format(speaker, basename),
         )
-        energy = np.load(energy_path)
+        energy = np.load(energy_path).astype(np.float32)
+
         duration_path = os.path.join(
             self.preprocessed_path,
             "duration",
             "{}-duration-{}.npy".format(speaker, basename),
         )
-        duration = np.load(duration_path)
+        duration = np.load(duration_path).astype(np.float32)
 
         sample = {
             "id": basename,
@@ -81,12 +97,14 @@ class Dataset(Dataset):
             speaker = []
             text = []
             raw_text = []
+
             for line in f.readlines():
                 n, s, t, r = line.strip("\n").split("|")
                 name.append(n)
                 speaker.append(s)
                 text.append(t)
                 raw_text.append(r)
+
             return name, speaker, text, raw_text
 
     def reprocess(self, data, idxs):
@@ -103,6 +121,7 @@ class Dataset(Dataset):
         mel_lens = np.array([mel.shape[0] for mel in mels])
 
         speakers = np.array(speakers)
+
         texts = pad_1D(texts)
         mels = pad_2D(mels)
         pitches = pad_1D(pitches)
@@ -133,13 +152,14 @@ class Dataset(Dataset):
         else:
             idx_arr = np.arange(data_size)
 
-        tail = idx_arr[len(idx_arr) - (len(idx_arr) % self.batch_size) :]
+        tail = idx_arr[len(idx_arr) - (len(idx_arr) % self.batch_size):]
         idx_arr = idx_arr[: len(idx_arr) - (len(idx_arr) % self.batch_size)]
         idx_arr = idx_arr.reshape((-1, self.batch_size)).tolist()
+
         if not self.drop_last and len(tail) > 0:
             idx_arr += [tail.tolist()]
 
-        output = list()
+        output = []
         for idx in idx_arr:
             output.append(self.reprocess(data, idx))
 
@@ -153,10 +173,9 @@ class TextDataset(Dataset):
         self.basename, self.speaker, self.text, self.raw_text = self.process_meta(
             filepath
         )
+
         with open(
-            os.path.join(
-                preprocess_config["path"]["preprocessed_path"], "speakers.json"
-            )
+            os.path.join(preprocess_config["path"]["preprocessed_path"], "speakers.json")
         ) as f:
             self.speaker_map = json.load(f)
 
@@ -168,7 +187,11 @@ class TextDataset(Dataset):
         speaker = self.speaker[idx]
         speaker_id = self.speaker_map[speaker]
         raw_text = self.raw_text[idx]
-        phone = np.array(text_to_sequence(self.text[idx], self.cleaners))
+
+        phone = np.array(
+            text_to_sequence(self.text[idx], self.cleaners),
+            dtype=np.int64
+        )
 
         return (basename, speaker_id, phone, raw_text)
 
@@ -178,12 +201,14 @@ class TextDataset(Dataset):
             speaker = []
             text = []
             raw_text = []
+
             for line in f.readlines():
                 n, s, t, r = line.strip("\n").split("|")
                 name.append(n)
                 speaker.append(s)
                 text.append(t)
                 raw_text.append(r)
+
             return name, speaker, text, raw_text
 
     def collate_fn(self, data):
@@ -191,65 +216,9 @@ class TextDataset(Dataset):
         speakers = np.array([d[1] for d in data])
         texts = [d[2] for d in data]
         raw_texts = [d[3] for d in data]
+
         text_lens = np.array([text.shape[0] for text in texts])
 
         texts = pad_1D(texts)
 
         return ids, raw_texts, speakers, texts, text_lens, max(text_lens)
-
-
-if __name__ == "__main__":
-    # Test
-    import torch
-    import yaml
-    from torch.utils.data import DataLoader
-    from utils.utils import to_device
-
-    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    preprocess_config = yaml.load(
-        open("./config/LJSpeech/preprocess.yaml", "r"), Loader=yaml.FullLoader
-    )
-    train_config = yaml.load(
-        open("./config/LJSpeech/train.yaml", "r"), Loader=yaml.FullLoader
-    )
-
-    train_dataset = Dataset(
-        "train.txt", preprocess_config, train_config, sort=True, drop_last=True
-    )
-    val_dataset = Dataset(
-        "val.txt", preprocess_config, train_config, sort=False, drop_last=False
-    )
-    train_loader = DataLoader(
-        train_dataset,
-        batch_size=train_config["optimizer"]["batch_size"] * 4,
-        shuffle=True,
-        collate_fn=train_dataset.collate_fn,
-    )
-    val_loader = DataLoader(
-        val_dataset,
-        batch_size=train_config["optimizer"]["batch_size"],
-        shuffle=False,
-        collate_fn=val_dataset.collate_fn,
-    )
-
-    n_batch = 0
-    for batchs in train_loader:
-        for batch in batchs:
-            to_device(batch, device)
-            n_batch += 1
-    print(
-        "Training set  with size {} is composed of {} batches.".format(
-            len(train_dataset), n_batch
-        )
-    )
-
-    n_batch = 0
-    for batchs in val_loader:
-        for batch in batchs:
-            to_device(batch, device)
-            n_batch += 1
-    print(
-        "Validation set  with size {} is composed of {} batches.".format(
-            len(val_dataset), n_batch
-        )
-    )

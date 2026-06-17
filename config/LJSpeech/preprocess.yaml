@@ -1,8 +1,8 @@
-import os
-# Insert your actual Drive paths at the top of the notebook (cell 1)
-# DRIVE_BASE, CKPT_PATH, LOG_PATH, RESULT_PATH are already set above
+# import os
+# # Insert your actual Drive paths at the top of the notebook (cell 1)
+# # DRIVE_BASE, CKPT_PATH, LOG_PATH, RESULT_PATH are already set above
 
-PREPROCESS_YAML = '''
+# PREPROCESS_YAML = '''
 dataset: "LJSpeech"
 
 path:
@@ -35,9 +35,7 @@ preprocessing:
     normalization: True
 '''
 
-# with open('/content/FastSpeech2/config/LJSpeech/preprocess.yaml', 'w') as f:
-#     f.write(PREPROCESS_YAML)
-# print('preprocess.yaml written')
+
 
 
 

@@ -1,4 +1,4 @@
-%%writefile /content/FastSpeech2/text/symbols.py
+# %%writefile /content/FastSpeech2/text/symbols.py
 # text/symbols.py — Urdu CV Dictionary v2.0.0 (MFA + eSpeak/Epitran)
 # ====================================================================
 # Covers phones emitted by MFA aligned with Urdu CV dict v2.0.0.

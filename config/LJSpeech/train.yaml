@@ -1,20 +1,76 @@
+# Build train.yaml dynamically so Drive paths are injected correctly
+TRAIN_YAML = f'''
 path:
-  ckpt_path: "./output/ckpt/LJSpeech"
-  log_path: "./output/log/LJSpeech"
-  result_path: "./output/result/LJSpeech"
+  ckpt_path:   "{CKPT_PATH}"
+  log_path:    "{LOG_PATH}"
+  result_path: "{RESULT_PATH}"
+
 optimizer:
   batch_size: 8
   betas: [0.9, 0.98]
   eps: 0.000000001
-  weight_decay: 0.0
+  weight_decay: 0.0001
   grad_clip_thresh: 1.0
-  grad_acc_step: 1
-  warm_up_step: 4000
-  anneal_steps: [300000, 400000, 500000]
-  anneal_rate: 0.3
+  grad_acc_step: 4
+  warm_up_step: 8000
+  anneal_steps: [150000, 200000, 250000]
+  anneal_rate: 0.5
+
 step:
-  total_step: 900
-  log_step: 100
-  synth_step: 100
-  val_step: 74
-  save_step: 100
+  total_step: 200000
+  log_step:   100
+  synth_step: 1000
+  val_step:   1000
+  save_step:  1000
+'''
+
+with open('/content/FastSpeech2/config/LJSpeech/train.yaml', 'w') as f:
+    f.write(TRAIN_YAML)
+print('train.yaml written')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# path:
+#   ckpt_path: "./output/ckpt/LJSpeech"
+#   log_path: "./output/log/LJSpeech"
+#   result_path: "./output/result/LJSpeech"
+# optimizer:
+#   batch_size: 8
+#   betas: [0.9, 0.98]
+#   eps: 0.000000001
+#   weight_decay: 0.0
+#   grad_clip_thresh: 1.0
+#   grad_acc_step: 1
+#   warm_up_step: 4000
+#   anneal_steps: [300000, 400000, 500000]
+#   anneal_rate: 0.3
+# step:
+#   total_step: 900
+#   log_step: 100
+#   synth_step: 100
+#   val_step: 74
+#   save_step: 100

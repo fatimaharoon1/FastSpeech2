@@ -24,9 +24,9 @@ step:
   save_step:  1000
 '''
 
-with open('/content/FastSpeech2/config/LJSpeech/train.yaml', 'w') as f:
-    f.write(TRAIN_YAML)
-print('train.yaml written')
+# with open('/content/FastSpeech2/config/LJSpeech/train.yaml', 'w') as f:
+#     f.write(TRAIN_YAML)
+# print('train.yaml written')
 
 
 

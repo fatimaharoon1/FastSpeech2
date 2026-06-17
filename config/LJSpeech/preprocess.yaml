@@ -35,9 +35,9 @@ preprocessing:
     normalization: True
 '''
 
-with open('/content/FastSpeech2/config/LJSpeech/preprocess.yaml', 'w') as f:
-    f.write(PREPROCESS_YAML)
-print('preprocess.yaml written')
+# with open('/content/FastSpeech2/config/LJSpeech/preprocess.yaml', 'w') as f:
+#     f.write(PREPROCESS_YAML)
+# print('preprocess.yaml written')
 
 
 

@@ -33,7 +33,6 @@ preprocessing:
   energy:
     feature: "phoneme_level"   # PHONEME LEVEL
     normalization: True
-'''
 
 
 

@@ -1,3 +1,8 @@
+import os
+# Insert your actual Drive paths at the top of the notebook (cell 1)
+# DRIVE_BASE, CKPT_PATH, LOG_PATH, RESULT_PATH are already set above
+
+PREPROCESS_YAML = '''
 dataset: "LJSpeech"
 
 path:
@@ -7,7 +12,7 @@ path:
   preprocessed_path: "./preprocessed_data/LJSpeech"
 
 preprocessing:
-  val_size: 50
+  val_size: 50         # with 4 samples: 1 val, 3 train
   text:
     text_cleaners: ["urdu_cleaners"]
     language: ""
@@ -21,10 +26,86 @@ preprocessing:
   mel:
     n_mel_channels: 80
     mel_fmin: 0
-    mel_fmax: 8000 # please set to 8000 for HiFi-GAN vocoder, set to null for MelGAN vocoder
+    mel_fmax: 8000
   pitch:
-    feature: "phoneme_level" # support 'phoneme_level' or 'frame_level'
+    feature: "phoneme_level"   # PHONEME LEVEL — more stable for low-data Urdu
     normalization: True
   energy:
-    feature: "phoneme_level" # support 'phoneme_level' or 'frame_level'
+    feature: "phoneme_level"   # PHONEME LEVEL
     normalization: True
+'''
+
+with open('/content/FastSpeech2/config/LJSpeech/preprocess.yaml', 'w') as f:
+    f.write(PREPROCESS_YAML)
+print('preprocess.yaml written')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# dataset: "LJSpeech"
+
+# path:
+#   corpus_path: "/content/FastSpeech2/dataset"
+#   lexicon_path: "/content/FastSpeech2/lexicon/urdu_dict.txt"
+#   raw_path: "./raw_data/LJSpeech"
+#   preprocessed_path: "./preprocessed_data/LJSpeech"
+
+# preprocessing:
+#   val_size: 50
+#   text:
+#     text_cleaners: ["urdu_cleaners"]
+#     language: ""
+#   audio:
+#     sampling_rate: 22050
+#     max_wav_value: 32768.0
+#   stft:
+#     filter_length: 1024
+#     hop_length: 256
+#     win_length: 1024
+#   mel:
+#     n_mel_channels: 80
+#     mel_fmin: 0
+#     mel_fmax: 8000 # please set to 8000 for HiFi-GAN vocoder, set to null for MelGAN vocoder
+#   pitch:
+#     feature: "phoneme_level" # support 'phoneme_level' or 'frame_level'
+#     normalization: True
+#   energy:
+#     feature: "phoneme_level" # support 'phoneme_level' or 'frame_level'
+#     normalization: True

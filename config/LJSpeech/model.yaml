@@ -1,4 +1,4 @@
-%%writefile /content/FastSpeech2/config/LJSpeech/model.yaml
+# %%writefile /content/FastSpeech2/config/LJSpeech/model.yaml
 
 transformer:
   encoder_layer: 4
